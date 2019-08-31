@@ -28,6 +28,48 @@ bool checkOrder(int * arr, int size)
 #ifdef TEST_SORT
 void ssort(int * arr, int size)
 {
+/*
+  printf("size: %d \n", size);
+  
+  for(int i=0; i<size; ++i)
+  { 
+    printf("Idx: %d \n", i);
+    printf("Ori Num: %d \n", arr[i]);    
+  }
+*/
+
+  int minNum = 0;
+  int minIdx = 0;
+
+  for(int cnt=0; cnt<size; ++cnt)
+  {
+    minNum = arr[cnt];
+    minIdx = cnt;
+   
+    for(int i=cnt+1; i<size; ++i)
+    {
+	if(arr[i] < minNum)
+	{
+	   minIdx = i;
+	   minNum = arr[i];
+	} 
+    }
+
+   int tmp = minNum;
+   arr[minIdx] = arr[cnt];
+   arr[cnt] = tmp;
+
+  }  
+/*
+  for(int i=0; i<size; ++i)
+  {
+    printf("Idx: %d \n", i);
+    printf("Ori Num: %d \n", arr[i]);
+  }
+*/
+
+
+  
   // This function has two levels of for
   // The first level specifies which element in the array
   // The second level finds the smallest element among the unsorted
@@ -42,24 +84,5 @@ void ssort(int * arr, int size)
 
   // After finding the smallest element among the unsorted elements,
   // swap it with the element of the index from the first level
-
-	int minNum = 0;
-	int minIdx = 0;
-
-	for(int cnt=0; cnt<size; ++cnt)
-	{
-		minNum = arr[cnt];
-		minIdx = cnt;
-		for(int i=cnt+1; i<size; ++i){
-			if(arr[i] < minNum)
-			{
-				minIdx = i;
-				minNum = arr[i];
-			} 
-		}
-		int tmp = minNum;
-		arr[minIdx] = arr[cnt];
-		arr[cnt] = tmp;
-  }  
 }
 #endif
