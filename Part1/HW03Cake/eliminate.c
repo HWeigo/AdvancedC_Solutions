@@ -91,7 +91,7 @@ void eliminate(int n, int k)
 	}
 	
 	// print the last one
-	fprintf(stdout, "%d \n", arr[idx]);
+	fprintf(stdout, "%d\n", arr[idx]);
 
 	// release the memory of the array
 	free (arr);
