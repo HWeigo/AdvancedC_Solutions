@@ -7,6 +7,7 @@ ERROR = -Wvla -Werror
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR) 
 
 TESTFALGS = -DTEST_ELIMINATE
+DEBUGFLAGS = -DDEBUG
 
 SRCS = main.c eliminate.c
 OBJS = $(SRCS:%.c=%.o)
@@ -30,6 +31,9 @@ test2: main
 test3: main
 	./main 25 7 > output3
 	diff output3 expected/expected3
+
+test4: main
+	./main 8 3 > output4
 
 clean: # remove all machine generated files
 	rm -f main *.o output?

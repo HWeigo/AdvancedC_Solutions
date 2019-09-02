@@ -11,18 +11,31 @@
 // 100% of the score
 void eliminate(int n, int k)
 {
-  // allocate an arry of n elements
-  int * arr = malloc(sizeof(* arr) * n);
-  // check whether memory allocation succeeds.
-  // if allocation fails, stop
-  if (arr == NULL)
+// #define DEBUG
+
+	// allocate an arry of n elements
+	int * arr = malloc(sizeof(* arr) * n);
+	// check whether memory allocation succeeds.
+	// if allocation fails, stop
+	if (arr == NULL)
     {
       fprintf(stderr, "malloc fail\n");
       return;
     }
-  // initialize all elements
 
+#ifdef DEBUG
 
+	fprintf(stdout, "arr has %d number. \n", n);
+	fprintf(stdout, "k is  %d. \n", k);
+
+#endif
+ 
+	// initialize all elements
+	for(int i=0; i< n; ++i)
+	{
+		arr[i] = i + 1;
+		fprintf(stdout, "%d \n", arr[i]);
+	}
   
   // counting to k,
   // mark the eliminated element
