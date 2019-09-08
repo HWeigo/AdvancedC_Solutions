@@ -6,12 +6,27 @@
 #include <stdbool.h>
 
 #ifdef TEST_COUNTCHAR
+
+// #define DEBUG 
 bool countChar(char * filename, int * counts, int size)
 {
   // open a file whose name is filename for reading
   // if fopen fails, return false. Do NOT fclose
   // if fopen succeeds, read every character from the file
   //
+	FILE * fptr;
+	fptr = fopen(filename, "r");
+	if (fptr == NULL)
+	{
+#ifdef DEBUG
+		fprintf(stdout, "fopen fail.\n");
+#endif
+		return false;
+	}
+#ifdef DEBUG 
+	fprintf(stdout, "fopen succsess.\n");
+#endif 
+
   // if a character (call it onechar) is between
   // 0 and size - 1 (inclusive), increase
   // counts[onechar] by one
@@ -24,8 +39,18 @@ bool countChar(char * filename, int * counts, int size)
   // hint: use fgetc
   // Please read the document of fgetc carefully, in particular
   // when reaching the end of the file
-  //
-  return true;
+	int onechar = 0;
+	do
+	{
+		onechar = fgetc(fptr);
+		if(onechar >= 0 && onechar <= (size - 1))
+		{
+			counts[onechar]++;
+		}
+	}while(onechar != EOF);
+	
+	fclose(fptr);
+	return true;
 }
 #endif
 
@@ -39,5 +64,22 @@ void printCounts(int * counts, int size)
   // onechar is printed if ind is between 'a' and 'z' or
   // 'A' and 'Z'. Otherwise, print space
   // if counts[ind] is zero, do not print
+
+	for(int i = 0; i <= (size - 1); i++)
+	{
+		if(counts[i] != 0)
+		{
+			// for charecter a-Z
+			if ((i >= 65 && i <= 90) || (i>= 97 && i<= 122))
+			{
+				fprintf(stdout,"%d, %c, %d\n", i, i, counts[i]);
+			}
+			else
+			{
+				fprintf(stdout,"%d, %c, %d\n", i, 32, counts[i]);
+			}
+		}
+	}
+
 }
 #endif
