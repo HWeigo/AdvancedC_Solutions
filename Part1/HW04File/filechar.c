@@ -21,6 +21,7 @@ bool countChar(char * filename, int * counts, int size)
 #ifdef DEBUG
 		fprintf(stdout, "fopen fail.\n");
 #endif
+		fprintf(stderr, "File Could Not Be Opened.\n");
 		return false;
 	}
 #ifdef DEBUG 
