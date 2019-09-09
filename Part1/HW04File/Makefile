@@ -38,6 +38,9 @@ test4: hw04
 test5: hw04
 	./hw04 inputs/2020 > output20
 
+test6: hw04
+	./hw04 > output21
+
 clean: # remove all machine generated files
 	rm -f hw04 *.o output??
 
