@@ -7,6 +7,7 @@
 #include <string.h>
 
 #ifdef TEST_COUNTWORD
+// #define DEBUG 
 int countWord(char * filename, char * word, char * line, int size)
 {
   // filename: name of the input file
@@ -16,6 +17,39 @@ int countWord(char * filename, char * word, char * line, int size)
   // open a file whose name is filename for reading
   // if fopen fails, return -1. 
   // if fopen succeeds, set sum to zero
+	
+	FILE *fptr;
+	fptr = fopen(filename, "r");
+	if (fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.\n");
+		return false;
+	}
+#ifdef DEBUG
+	fprintf(stdout, "fonpen succeed.\n");
+#endif
+
+	int lenOfWord = strlen(word);
+	int sum = 0;
+#ifdef DEBUG 
+	fprintf(stdout,"%d\n", lenOfWord);
+#endif 
+//	while(!feof(fptr))
+	while(fgets(line, size, fptr) != NULL)
+	{
+//		fgets(line, size, fptr);
+#ifdef DEBUG 
+		fprintf(stdout,"%s\n",line);
+#endif 
+	    char *cptr = strstr(line, word);
+		while(cptr)
+		{
+			sum++;
+			cptr += lenOfWord;
+			cptr = strstr(cptr, word);
+		}
+	}
+	return sum;
   // use fgets to read the file
   // if word appears in a line, add one to sum
   //

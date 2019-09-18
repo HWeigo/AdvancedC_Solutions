@@ -45,6 +45,8 @@ test6: hw06
 	./hw06 inputs/input6 "aa" > output6
 	diff -w output6 expected/expected6
 
+test7: hw06
+	./hw06 inputs/input7 "aa" > output7
 
 clean: # remove all machine generated files
 	rm -f hw06 *.o output*
