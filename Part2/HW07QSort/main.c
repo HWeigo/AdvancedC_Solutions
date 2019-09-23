@@ -9,6 +9,7 @@
 #include "hw07.h"
 
 #ifdef TEST_MAIN
+// #define DEBUG_HW
 int main(int argc, char * * argv)
 {
   // argv[1]: name of input file
@@ -19,7 +20,7 @@ int main(int argc, char * * argv)
   // count the number of integers in the file
   int numElem = 0;
   numElem = countInt(argv[1]);
-
+  
   if (numElem == -1) // fopen fails
     {
       return EXIT_FAILURE;
@@ -31,30 +32,35 @@ int main(int argc, char * * argv)
   // 3. check whether allocation succeed
   //    if allocation fails, return EXIT_FAILURE
 
-  int * intArr;
+	int * intArr;
+	intArr = malloc(sizeof(int) * numElem);
 
-  bool rtv = readInt(argv[1], intArr, numElem);
+	bool rtv = readInt(argv[1], intArr, numElem);
 
-  if (rtv == false) //if read fails, return EXIT_FAILURE
+	if (rtv == false) //if read fails, return EXIT_FAILURE
     { 
-
+		return EXIT_FAILURE;
     }
+#ifdef DEBUG_HW
+	fprintf(stdout, "%d", intArr[1]);
+#endif
   
   // call qsort using the comparison function you write
-  qsort(....);
+	qsort(intArr, numElem, sizeof(int), compareInt);
 
   // write the sorted array to a file whose name is argv[2]
   
   rtv = writeInt(argv[2], intArr, numElem);
   if (rtv == false) // read fail
     {
+		free(intArr);
       // release memory
       return EXIT_FAILURE;
     }
 
   // everything is ok, release memory, return EXIT_SUCCESS
-
-  return EXIT_SUCCESS;
+	free(intArr);
+	return EXIT_SUCCESS;
 }
 #endif
 
