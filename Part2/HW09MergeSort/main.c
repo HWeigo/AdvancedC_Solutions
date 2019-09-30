@@ -30,7 +30,7 @@ int main(int argc, char * * argv)
     {
       return EXIT_FAILURE;
     }
-
+/*
   // call mergeSort
   // be careful about the arguments
   mergeSort(....);
@@ -44,6 +44,7 @@ int main(int argc, char * * argv)
     {
       return EXIT_FAILURE;
     }
+*/
   return EXIT_SUCCESS;
 }
 #endif

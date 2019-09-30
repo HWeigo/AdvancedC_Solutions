@@ -88,7 +88,7 @@ bool readData(char * filename, int * * arr, int * size)
 	for(int i = 0; i<(*size); ++i)
 	{
 		fread(*arr, sizeof(int), 1, fptr);
-		*arr ++;
+		(*arr)++;
 	}
 	if(!fseek(fptr, 1, SEEK_CUR))
 	{
@@ -233,20 +233,13 @@ static void merge(int * arr, int l, int m, int r)
 
   // Hint: you may consider to allocate memory here.
   // Allocating additiional memory makes this function easier to write
-
-
-
+	for(int i = 0; i<len; ++i)
+	{
+		arr[l + i] = output[i];
+	}
 
   // merge the two parts (each part is already sorted) of the array
   // into one sorted array
-
-  
-
-
-
-
-  
-
 
   // the following should be at the bottom of the function
 #ifdef DEBUG
@@ -254,6 +247,7 @@ static void merge(int * arr, int l, int m, int r)
   // This part is used for grading. 
   printInput("Merge out", arr, l, m, r);
 #endif
+  return;
 }
 #endif
 
