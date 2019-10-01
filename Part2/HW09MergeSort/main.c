@@ -30,21 +30,21 @@ int main(int argc, char * * argv)
     {
       return EXIT_FAILURE;
     }
-/*
+
   // call mergeSort
   // be careful about the arguments
-  mergeSort(....);
+  mergeSort(arr, 0, size-1);
 
 
   // write results to the output file
-  rtv = writeData(....);
+  rtv = writeData(argv[2], arr, size);
   free (arr);
 
   if (rtv == false)
     {
       return EXIT_FAILURE;
     }
-*/
+
   return EXIT_SUCCESS;
 }
 #endif

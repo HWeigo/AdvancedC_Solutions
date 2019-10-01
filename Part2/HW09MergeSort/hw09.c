@@ -87,16 +87,15 @@ bool readData(char * filename, int * * arr, int * size)
   // use fread to read the number of integers in the file
 	for(int i = 0; i<(*size); ++i)
 	{
-		fread(*arr, sizeof(int), 1, fptr);
-		(*arr)++;
+		fread(&((*arr)[i]), sizeof(int), 1, fptr);
+	//	(*arr)++;
 	}
-	if(!fseek(fptr, 1, SEEK_CUR))
+	int tmp = ftell(fptr);
+	if(tmp != len) 
 	{
-		fprintf(stderr, "File error.\n");
 		fclose(fptr);
 		return false;
 	}
-
 
   // if fread does not read the correct number
   // release allocated memory
@@ -147,23 +146,38 @@ bool writeData(char * filename, const int * arr, int size)
 			return false;
 		}
 	}
-
+	fclose(fptr);
   // check whether all elements of the array have been written
-
-
-  // fclose
-
-
   
-  // if not all elements have been written, return false
+	fptr = fopen(filename, "r");
+	if( fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.");
+		return false;
+	}
+	
+	if(fseek(fptr, 0, SEEK_END))
+	{
+		fclose(fptr);
+		return false;
+	}
 
 
+  // use ftell to determine the size of the file
+	int len;
+	len = ftell(fptr);
+	if(size != (len/sizeof(int)))
+	{	
+		fprintf(stderr, "fwrite missed number.\n");
+		fclose(fptr);
+		return false;
+	}
+
+  // if not all elements have been written, return false 
 
   // if all elements have been written, return true
 	fclose(fptr);
 	return true;
-
-
 }
 #endif
 
@@ -195,13 +209,13 @@ static void merge(int * arr, int l, int m, int r)
 
 	int len = r - l + 1;
 	int idxl = l;
-	int idxr = m+1;
+	int idxr = m;
 	int idx = 0;
 
 	int *output;
 	output = malloc(sizeof(int) * len);
 	
-	while(idx != (len - 1))
+	while(idx != len)
 	{
 		if(idxl == m)
 		{
@@ -210,7 +224,7 @@ static void merge(int * arr, int l, int m, int r)
 			idx++;
 			continue;
 		}
-		if(idxr == r)
+		if(idxr == r + 1)
 		{
 			output[idx] = arr[idxl];
 			idxl++;
@@ -270,16 +284,17 @@ void mergeSort(int arr[], int l, int r)
 #endif
 
   // if the array has no or one element, do nothing
-
-
+	if((r - l)<1) return;
+	int mid = (l+r)/2;
+	mergeSort(arr, l, mid);
+	mergeSort(arr, mid+1, r);
+	merge(arr, l, mid+1, r);
 
   // divide the array into two arrays
   // call mergeSort with each array
   // merge the two arrays into one
   
-
-
-
+	return;
 
 } 
 #endif
