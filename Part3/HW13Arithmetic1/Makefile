@@ -19,7 +19,7 @@ hw13: $(OBJS)
 	$(GCC) $(TESTFALGS) -c $*.c
 
 testmemory: hw13  
-	$(VAL) ./hw13 
+	$(VAL) ./hw13 inputs/test1 
 #testing only input3 and output3
 
 testall: test1 test2 test3 

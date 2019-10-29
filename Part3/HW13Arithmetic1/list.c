@@ -68,6 +68,7 @@ void deleteList(List * arithlist)
 		p = p->next;
 		deleteNode(arithlist, q);
 	}
+	free(arithlist);
 }
 #endif
 
@@ -154,7 +155,7 @@ bool deleteNode(List * arithlist, ListNode * ln)
 	{
 		if(p == arithlist->head)
 		{
-			if(p->next == NULL)
+			if(p == arithlist->tail)
 			{
 				arithlist->head = NULL;
 				arithlist->tail = NULL;
