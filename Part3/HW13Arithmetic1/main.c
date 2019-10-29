@@ -50,7 +50,6 @@ int main (int argc, char ** argv)
       return EXIT_FAILURE;
     }
   printList(arithlist);
-  /*
   if (calculate(arithlist) == true)
     {
       printList(arithlist);
@@ -59,7 +58,6 @@ int main (int argc, char ** argv)
     {
       printf("invalid\n");
     }
-  */
   deleteList(arithlist);
   return EXIT_SUCCESS;
 }

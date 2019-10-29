@@ -38,16 +38,17 @@ int isOperator(char * word)
 // if arithlist is NULL, return true
 // if arithlist -> head is NULL, return true
 // if the input list is invalid, return false
+
 bool calculate(List * arithlist)
 {
-	if (arithlist == NULL)
-    {
+	if(arithlist == NULL)
+	{
 		return true;
-    }
-	if ((arithlist -> head) == NULL)
-    {
+	}
+	if((arithlist->head) == NULL)
+	{
 		return true;
-    }
+	}
   // go through the list until there is only node in the list
   // find the next operator
   // If no operator can be found, return false
@@ -67,21 +68,73 @@ bool calculate(List * arithlist)
 	ListNode *q = NULL;
 	p = arithlist->head;
 	int oper = -1;
-
-	oper = isOperator(p->word);
-	while(oper == -1)
+	int num1 = 0;
+	int num2 = 0;
+	int result = 0;
+	char output[WORDLENGTH];
+	while(p->next != NULL)
 	{
-		p = p->next;
-	}
-	if(p = 0)
-	{
+		oper = isOperator(p->word);
+		while(oper == -1)
+		{
+			if(p->next == NULL)
+			{
+				fprintf(stderr, "last node is not an operator.\n");
+				return false;
+			}
+			p = p->next;
+			oper = isOperator(p->word);
+		}
+		q = p->prev;
+		
+		if((p->prev == NULL) || (q->prev == NULL))
+		{
+			fprintf(stderr, "cannot find previous two operands.\n");
+			return false;
+		}
 
+		num1 = (int)strtol((q->prev)->word, NULL, 10);
+		num2 = (int)strtol((p->prev)->word, NULL, 10); 
+		if(oper == 0)
+		{
+			result = num1 + num2;
+			sprintf(output, "%d\n", result);
+			deleteNode(arithlist, q->prev);
+			deleteNode(arithlist, p->prev);
+			strcpy(p->word, output);
+		}
+		if(oper == 1)
+		{
+			result = num1 - num2;
+			sprintf(output, "%d\n", result);
+			deleteNode(arithlist, q->prev);
+			deleteNode(arithlist, p->prev);
+			strcpy(p->word, output);
+		}
+		if(oper == 2)
+		{
+			result = num1 * num2;
+			sprintf(output, "%d\n", result);
+			deleteNode(arithlist, q->prev);
+			deleteNode(arithlist, p->prev);
+			strcpy(p->word, output);
+		}
+		q = NULL;
 	}
   
   // if more than one node left, return false
-
+	if(arithlist->head != arithlist->tail)
+	{
+		fprintf(stderr, "more than one node left.\n");
+		return false;
+	}
   // if the remaining node is an operator, return false
-
+	p = arithlist->head;
+	if(isOperator(p->word) != -1)
+	{
+		fprintf(stderr, "remaining node is an operator.\n");
+		return false;
+	}
   // if everything is OK, return true
   return true;
 }
