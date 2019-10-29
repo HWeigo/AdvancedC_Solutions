@@ -40,13 +40,13 @@ int isOperator(char * word)
 // if the input list is invalid, return false
 bool calculate(List * arithlist)
 {
-  if (arithlist == NULL)
+	if (arithlist == NULL)
     {
-      return true;
+		return true;
     }
-  if ((arithlist -> head) == NULL)
+	if ((arithlist -> head) == NULL)
     {
-      return true;
+		return true;
     }
   // go through the list until there is only node in the list
   // find the next operator
@@ -63,8 +63,20 @@ bool calculate(List * arithlist)
   //     the list should have exactly one node left. If this is not
   //     true, return false
   // If the input is valud, return true
+	ListNode *p = NULL;
+	ListNode *q = NULL;
+	p = arithlist->head;
+	int oper = -1;
 
+	oper = isOperator(p->word);
+	while(oper == -1)
+	{
+		p = p->next;
+	}
+	if(p = 0)
+	{
 
+	}
   
   // if more than one node left, return false
 

@@ -23,7 +23,34 @@
 //    return true
 bool readList(char * filename, List * arithlist)
 {
-  return true;
+	FILE *fptr;
+	fptr = fopen(filename, "r");
+	if(fptr == NULL)
+	{
+		fprintf(stderr, "fopen failed.\n");
+		return false;
+	}
+
+	char temp[11];
+	char word[10];
+	while(fgets(temp, 11 , fptr) != NULL)
+	{
+		if(strlen(temp) > 9)
+		{
+			// free memory of the list 
+			deleteList(arithlist);
+			fclose(fptr);
+			fprintf(stderr, "A line is too long.\n");
+			return false;
+		}
+		else
+		{
+			strcpy(word, temp);
+			addNode(arithlist, word);
+		}
+	}
+	fclose(fptr);
+	return true;
 }
 #endif
 
@@ -33,6 +60,14 @@ bool readList(char * filename, List * arithlist)
 // release the memory of the list 
 void deleteList(List * arithlist)
 {
+	ListNode *p = NULL;
+	p = arithlist->head;
+	while(p != NULL)
+	{
+		ListNode *q = p;
+		p = p->next;
+		deleteNode(arithlist, q);
+	}
 }
 #endif
 
@@ -50,6 +85,31 @@ void deleteList(List * arithlist)
 // insert the ListNode to the list
 void addNode(List * arithlist, char * word)
 {
+	if(arithlist == NULL)
+	{
+		fprintf(stderr, "Arithlist is NULL.\n");
+		return;
+	}
+	if(arithlist->head == NULL)
+	{
+		ListNode *p;
+		p = malloc(sizeof(ListNode));
+		strcpy(p->word, word);
+		p->next = NULL;
+		p->prev = NULL;
+		arithlist->head = p;
+		arithlist->tail = p;
+	}
+	else
+	{
+		ListNode *p = NULL;
+		p = malloc(sizeof(ListNode));
+		strcpy(p->word, word);
+		p->next = NULL;
+		p->prev = arithlist->tail;
+		(arithlist->tail)->next = p;
+		arithlist->tail = p;
+	}
 }
 #endif
 
@@ -69,7 +129,58 @@ void addNode(List * arithlist, char * word)
 // Be careful about delete the first or the last node
 bool deleteNode(List * arithlist, ListNode * ln)
 {
-  return true;
+	if(arithlist == NULL)
+	{
+		fprintf(stderr, "arithlist is NULL.\n");
+		return false;
+	}
+	if((arithlist->head == NULL) || (arithlist->tail == NULL))
+	{
+		fprintf(stderr, "arithlist is empty.\n");
+		return false;
+	}
+	ListNode *p = NULL;
+	p = arithlist->head;
+	while((p != ln) && (p != NULL))
+	{
+		p = p->next;
+	}
+	if(p == NULL)
+	{
+		fprintf(stderr, "ln is not in the list.\n");
+		return false;
+	}
+	else
+	{
+		if(p == arithlist->head)
+		{
+			if(p->next == NULL)
+			{
+				arithlist->head = NULL;
+				arithlist->tail = NULL;
+				free(p);
+				return true;
+			}
+			(p->next)->prev = NULL;
+			arithlist->head = p->next;
+			free(p);
+		}
+		else if(p == arithlist->tail)
+		{
+			(p->prev)->next = NULL;
+			arithlist->tail = p->prev;
+			free(p);
+		}
+		else
+		{
+			ListNode *q = NULL;
+			q = p->prev;
+			q->next = p->next;
+			(p->next)->prev = q;
+			free(p);
+		}
+	}
+	return true;
 }
 #endif
 
