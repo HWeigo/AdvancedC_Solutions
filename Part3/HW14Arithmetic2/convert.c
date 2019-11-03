@@ -38,14 +38,126 @@ int isOperator(char * word)
 #ifdef TEST_CONVERT
 bool convert(List * arithlist)
 {
-  if (arithlist == NULL)
+
+	if (arithlist == NULL)
     {
       return true;
     }
-  if ((arithlist -> head) == NULL)
+	if ((arithlist -> head) == NULL)
     {
       return true;
     }
-  return true;
+	
+	List *oper;
+	oper = malloc(sizeof(List));
+	oper -> head = NULL;
+	oper -> tail = NULL;
+
+	List *output;
+	output = malloc(sizeof(List));
+	output -> head = NULL;
+	output -> tail = NULL;
+	
+	ListNode *p;
+	ListNode *q = NULL;
+	ListNode *tmp = NULL;
+	ListNode *operLast = NULL;
+	p = arithlist->head;
+	operLast = oper->tail;
+	while(p != NULL)
+	{
+		switch(isOperator(p->word)){
+			case -1:
+				addNode(output, p->word);
+				break;
+
+			case 0:
+			case 1:
+			case 2:
+				if(operLast == NULL)
+				{
+					addNode(oper, p->word);
+					operLast = oper->tail;
+					break;
+				}
+				/*
+				if(isOperator(operLast->word) == 2)
+				{
+					addNode(output, operLast->word);
+					deleteNode(oper, operLast);
+					addNode(oper, p->word);
+				}
+				*/
+				if(isOperator(operLast->word) == 2)
+				{
+					while(operLast != NULL)
+					{
+						addNode(output, operLast->word);
+						tmp = operLast;
+						operLast = operLast->prev;
+						deleteNode(oper, tmp);
+						tmp = NULL;
+					}
+					addNode(oper, p->word);
+				}
+				else
+				{
+					addNode(oper, p->word);
+				}	
+				operLast = oper->tail;
+				break;
+			case 3:
+				addNode(oper, p->word);
+				operLast = oper->tail;
+				break;
+			case 4:
+				q = operLast;
+				while(isOperator(q->word) != 3)
+				{
+					addNode(output, q->word);
+					tmp = q;
+					q = q->prev;
+					deleteNode(oper, tmp);
+					tmp = NULL;
+				}
+				deleteNode(oper, q);
+				operLast = oper->tail;
+				break;
+
+			default:
+				break;
+		}
+		p = p->next;
+	}
+	q = NULL;
+	
+	// copy operations to output 
+	p = oper->tail;
+	while(p != NULL)
+	{
+		addNode(output, p->word);
+		p = p->prev;
+	}
+
+	// delete original list 
+	p = arithlist->head;
+	while(p != NULL)
+	{
+		deleteNode(arithlist, p);
+		p = arithlist->head;	
+	}
+
+	// copy list 
+	p = output->head;
+	while(p != NULL)
+	{
+		addNode(arithlist, p->word);
+		p = p->next;
+	}
+
+
+	deleteList(output);
+	deleteList(oper);
+	return true;
 }
-#endif
+#endif 
