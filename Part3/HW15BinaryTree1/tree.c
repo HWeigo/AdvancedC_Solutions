@@ -83,7 +83,7 @@ int search(int *inArray, int inStrt, int inEnd, int value)
 	return 0;
 }
 
-Tree * buildTreeHelp(int *inArray, int *postArray, int inStrt, int inEnd, int *pIndex)
+TreeNode * buildTreeHelp(int *inArray, int *postArray, int inStrt, int inEnd, int *pIndex)
 {
 	if(inStrt > inEnd)
 	{
@@ -100,8 +100,8 @@ Tree * buildTreeHelp(int *inArray, int *postArray, int inStrt, int inEnd, int *p
 
 	int iIndex = search(inArray, inStrt, inEnd, node->value);
 
-	buildTreeHelp(inArray, postArray, iIndex + 1, inEnd, &pIndex);
-	buildTreeHelp(inArray, postArray, inStrt, iIndex - 1, &pIndex);
+	node->right = buildTreeHelp(inArray, postArray, iIndex + 1, inEnd, pIndex);
+	node->left = buildTreeHelp(inArray, postArray, inStrt, iIndex - 1, pIndex);
 
 	return node;
 }
@@ -109,6 +109,8 @@ Tree * buildTreeHelp(int *inArray, int *postArray, int inStrt, int inEnd, int *p
 Tree * buildTree(int * inArray, int * postArray, int size)
 {
 	int pIndex = size - 1;
-	return buildTreeHelp(inArray, postArray, 0, n-1, &pIndex);
+	Tree *tree = malloc(sizeof(Tree));
+	tree->root = buildTreeHelp(inArray, postArray, 0, size-1, &pIndex);
+	return tree;
 }
 #endif
