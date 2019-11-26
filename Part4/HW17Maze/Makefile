@@ -13,7 +13,7 @@ hw17: $(OBJS)
 .c.o: 
 	$(GCC) $(TESTFALGS) -c $*.c 
 
-testall: test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12 
+testall: test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12 test13 
 
 test1: hw17
 	./hw17 inputs/maze1 > output1
@@ -40,7 +40,7 @@ test6: hw17
 	diff -w output6 expected/expected6 
 
 test7: hw17
-	./hw17 inputs/maze7 > output7
+	./hw17 inputs/maze7 
 	diff -w output7 expected/expected7
 
 test8: hw17 
@@ -63,6 +63,9 @@ test12: hw17
 	./hw17 inputs/maze12 > output12
 	diff -w output12 expected/expected12 
 
+test13: hw17 
+	./hw17 inputs/maze13 > output13
+	diff -w output13 expected/expected13
 
 memory: hw16
 	$(VAL) ./hw16 inputs/test6in inputs/test6post 

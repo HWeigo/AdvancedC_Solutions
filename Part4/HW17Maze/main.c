@@ -17,7 +17,6 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 //	printMaze(mzptr);
-//	destroyMaze(mzptr);
 //	printf("\n");	
 
 	playMaze(mzptr, mzptr->row_start, mzptr->col_start, ORIGIN, 0);
