@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
 	mzptr = readMaze(argv[1], mzptr);
 	if(mzptr == NULL)
 	{
-		return -1;
+		return 0;
 	}
 //	printMaze(mzptr);
 //	printf("\n");	

@@ -150,8 +150,11 @@ bool canMove(Maze *mzptr, int row, int col, int dir)
 	}
 	
 	int dest = (mzptr->cells)[row][col];
-	
-	if((dest == -1 || dest < (curr + 1)) && (dest != -2))
+	if((row == mzptr->row_exit) && (col == mzptr->col_exit))
+	{
+		return true;
+	}
+	if((dest == -1 || dest < (curr + 1)))
 	{
 		return false;
 	}
@@ -160,7 +163,7 @@ bool canMove(Maze *mzptr, int row, int col, int dir)
 
 void getout(Maze *mzptr, int row, int col, int dir, int step)
 {
-	if((mzptr->cells)[row][col] == -2)
+	if((row == mzptr->row_exit) && (col == mzptr->col_exit))
 	{
 		(mzptr->cells)[row][col] = step;
 		return;

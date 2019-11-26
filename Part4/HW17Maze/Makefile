@@ -15,6 +15,9 @@ hw17: $(OBJS)
 
 testall: test1 test2 test3 test4 test5 test6 test7 test8 test9 test10 test11 test12 test13 
 
+testmemory: hw17 
+	$(VAL) ./hw17 inputs/maze7
+
 test1: hw17
 	./hw17 inputs/maze1 > output1
 	diff -w output1 expected/expected1
@@ -40,7 +43,7 @@ test6: hw17
 	diff -w output6 expected/expected6 
 
 test7: hw17
-	./hw17 inputs/maze7 
+	./hw17 inputs/maze7 > output7 
 	diff -w output7 expected/expected7
 
 test8: hw17 
@@ -71,7 +74,7 @@ memory: hw16
 	$(VAL) ./hw16 inputs/test6in inputs/test6post 
 
 clean: # remove all machine generated files
-	rm -f hw17 *.o output? vallog testgen
+	rm -f hw17 *.o output* vallog testgen
 
 
 
