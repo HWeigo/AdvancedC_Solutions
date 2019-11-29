@@ -8,6 +8,8 @@
 
 typedef struct
 {
+	int *block;
+	int size;
   // create the necessary attributes
 } Memory;
 

@@ -18,17 +18,29 @@ bool createMemory(Memory ** mem, int size)
   // * mem stores the memory of the allocated memory object
   // If creating the memory object fails, return false
   // If creating the memory object succeeds, return true
-  if (size <= 1) // too small
-    {
-      return false;
-    }
-  return true;
+ // if too small 
+	if (size <= 1)
+	{
+		return false;
+	}
+	*mem = malloc(sizeof(Memory));
+	(*mem)->block = malloc(sizeof(int)*size);
+	int *inptr = (*mem)->block;
+	for(int i=0;i<size;i++)
+	{
+		inptr[i] = -1;
+	}
+	(*mem)->size = size;
+	return true;
 }
 #endif
 
 #ifdef TEST_DESTROYMEMORY
 void destroyMemory(Memory * mem)
 {
+	free(mem->block);
+	free(mem);
+	return;
   // release the memory allocated by createMemory
   // must not have memory leak
 }
@@ -71,13 +83,41 @@ bool saveOccupancy(Memory * mem, const char * filename)
 // allocated and the first block starts from 0. This is different from
 // the malloc function in C. When malloc returns NULL (equivalent to
 // 0), malloc fails
+int checkAvailable(int *inptr, int sizeAllo)
+{
+	for(int i=0;i<sizeAllo;i++)
+	{
+		if(inptr[i] != -1)
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
 int allocateMemory(Memory * mem, int size)
 {
-  if (size <= 0)
+	if (size <= 0)
     {
       return -1;
     }
-  return -1;
+	int *inptr = NULL;
+	int ind = 0;
+	while(ind < (mem->size - size)) // double check!
+	{
+		inptr =&((mem->block)[ind]);
+		if(checkAvailable(inptr, size))
+		{
+			mem->block[ind] = size;
+			for(int i=1;i<size;i++)
+			{
+				mem->block[ind+i] = 0;
+			}
+			return ind;
+		}
+		ind++;
+	}
+	return -1;
 }
 #endif 
 
@@ -92,14 +132,30 @@ int allocateMemory(Memory * mem, int size)
 // If starting is invalid, this function is no effect
 void freeMemory(Memory * mem, int starting)
 {
-  if (mem == NULL)
+	if (mem == NULL)
     {
       return;
     }
-  if (starting < 0) 
+	if (starting < 0) 
     {
       fprintf(stderr, "WRONG, starting address negative\n");
       return;
     }
+	if(starting >= mem->size)
+	{
+		fprintf(stderr, "WRONG, starting address too large.\n");
+		return;
+	}
+	int check = mem->block[starting];
+	if(check == -1 || check == 0)
+	{
+		return;
+	}
+	int numDelete = mem->block[starting];
+	for(int i=0;i<numDelete;i++)
+	{
+		mem->block[starting+i] = -1;
+	}
+	return;
 }
-#endif
+#endif  
