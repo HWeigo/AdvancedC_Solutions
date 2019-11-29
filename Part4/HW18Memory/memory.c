@@ -47,6 +47,18 @@ void destroyMemory(Memory * mem)
 #endif
 
 #ifdef TEST_SAVEOCCUPANCY
+unsigned char setbit(unsigned char num, int bit)
+{
+	num |= (1<<bit);
+	return num;
+}
+
+unsigned char clearbit(unsigned char num, int bit)
+{
+	num &= ~(1<<bit);
+	return num;
+}
+
 bool saveOccupancy(Memory * mem, const char * filename)
 {
   // save the occupancy of the blocks
@@ -63,7 +75,55 @@ bool saveOccupancy(Memory * mem, const char * filename)
   //
   // If opening the file or saving fails, return false
   // Othersie, return true
-  return true;
+	int numBlocks = mem->size;
+	int integer = numBlocks / 8;
+	int remainder = numBlocks % 8;
+	int byte = 0
+	unsigned char output = 0;
+	unsigned char mask = 0;
+	if(numBlocks == 0)
+	{
+		return false;
+	}
+
+	if(remainder)
+	{
+		output = 0xFF;
+		byte = integer + 1;
+		for(int i=0;i<byte;i++)
+		{
+			output = output << 8 + 0xFF;
+		}
+		for(int i=0;i<(8-remainder);i++)
+		{
+			output = clearbit(i);
+		}
+	}
+	else
+	{
+		output = 0xFF;
+		byte = integer;
+		for(int i=0;i<byte;i++)
+		{
+			output = output << 8 + 0xFF;
+		}
+	}
+
+	for(int i=0;i<numBlocks;i++)
+	{
+		if(mem->block[i] == -1)
+		{
+			output = clearbit(output,8*byte-1-i);
+		}
+	}
+	
+	// write file 
+	FILE *fptr = NULL;
+	fptr = fopen(filename, "w");
+	fwrite(output, 1, sizeof(output), fptr);
+	fclose(fptr);
+
+	return true;
 }
 #endif
 
