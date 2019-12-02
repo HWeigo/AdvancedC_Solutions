@@ -3,17 +3,36 @@
 #include <stdlib.h>
 #include "memory.h"
 
-int main(int argc, char ** agrv)
+void printOccupancy(Memory *mem)
+{
+	int size = mem->size;
+	for(int i=0;i<size;i++)
+	{
+		printf("%d ", mem->block[i]);
+	}
+	printf("\n");
+}
+int main(int argc, char ** argv)
 {
 	// argv[1]: size of memory
 	
-	if(agrc < 3)
+	if(argc < 4)
 	{
 		fprintf(stderr, "Not enough argument.");
 		return EXIT_FAILURE;
 	}
-	size = argv[1];
+	int totalSize = (int)strtol(argv[1], NULL, 10);
+	int alloSize = (int)strtol(argv[2], NULL, 10);
 	Memory *mem = NULL;
-	createMemory(&mem, size);
-	allocateMemory(mem, argv[2]);
+	createMemory(&mem, totalSize);
+	allocateMemory(mem, alloSize);
+	allocateMemory(mem, alloSize);
+	freeMemory(mem, 0);
+	allocateMemory(mem,3);
+	allocateMemory(mem,6);
+//	saveOccupancy(mem, argv[3]);
+	printOccupancy(mem);
+	destroyMemory(mem);
+
+	return EXIT_SUCCESS;
 }

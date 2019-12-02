@@ -11,7 +11,7 @@ typedef struct
 	int *block;
 	int size;
   // create the necessary attributes
-} Memory;
+}Memory;
 
 bool createMemory(Memory * * mem, int size);
 void destroyMemory(Memory * mem);

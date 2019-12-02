@@ -53,11 +53,12 @@ unsigned char setbit(unsigned char num, int bit)
 	return num;
 }
 
-unsigned char clearbit(unsigned char num, int bit)
+unsigned char clearbit(unsigned char  num, int bit)
 {
 	num &= ~(1<<bit);
 	return num;
 }
+
 
 bool saveOccupancy(Memory * mem, const char * filename)
 {
@@ -78,53 +79,119 @@ bool saveOccupancy(Memory * mem, const char * filename)
 	int numBlocks = mem->size;
 	int integer = numBlocks / 8;
 	int remainder = numBlocks % 8;
-	int byte = 0
-	unsigned char output = 0;
-	unsigned char mask = 0;
+	int byte = 0;
 	if(numBlocks == 0)
 	{
 		return false;
 	}
-
+	unsigned char *output;
 	if(remainder)
 	{
-		output = 0xFF;
 		byte = integer + 1;
-		for(int i=0;i<byte;i++)
-		{
-			output = output << 8 + 0xFF;
-		}
-		for(int i=0;i<(8-remainder);i++)
-		{
-			output = clearbit(i);
-		}
 	}
 	else
 	{
-		output = 0xFF;
 		byte = integer;
-		for(int i=0;i<byte;i++)
+	}
+
+	// initialize output char list 
+	output = malloc(sizeof(unsigned char) * byte);
+	for(int i=0;i<byte;i++)
+	{
+		output[i] = 0xFF;
+	}
+
+	// if number of blocks is not a multiple of 8, clear the last n bits
+	if(remainder)
+	{
+		for(int i=0;i<(8-remainder);i++)
 		{
-			output = output << 8 + 0xFF;
+			output[byte-1] = clearbit(output[byte-1],i);
 		}
 	}
 
-	for(int i=0;i<numBlocks;i++)
+	int indBlock = 0;
+	int indByte = 0;
+	int indBit = 0;
+	while(indBlocks != (numBlocks - 1))
 	{
-		if(mem->block[i] == -1)
+		indByte = indBlock/8;
+		indBit = indBlock%8;
+
+		if(mem->block[indBlock] == -1)
 		{
-			output = clearbit(output,8*byte-1-i);
+			output[indByte] = clearbit(output[indByte], indBit);
 		}
+		indBlocks++;
 	}
 	
-	// write file 
-	FILE *fptr = NULL;
-	fptr = fopen(filename, "w");
-	fwrite(output, 1, sizeof(output), fptr);
-	fclose(fptr);
-
-	return true;
 }
+//bool saveOccupancy(Memory * mem, const char * filename)
+//{
+//  // save the occupancy of the blocks
+//  // if a block is not occupied, use bit 0
+//  // if a block is occupied, use bit 1
+//  // save the bits to the file with filename
+//  //
+//  // If the number of blocks is not a multiple of 8,
+//  // use 0 for the unused bit (or bits)
+//  //
+//  // If n is the number of blocks, the output to the file
+//  // should have n / 8 bytes (when n is a multiple of 8).
+//  // and n / 8 + 1 bytes (when n is not a multiple of 8).
+//  //
+//  // If opening the file or saving fails, return false
+//  // Othersie, return true
+//	int numBlocks = mem->size;
+//	int integer = numBlocks / 8;
+//	int remainder = numBlocks % 8;
+//	int byte = 0;
+//	unsigned long output = 0;
+////	unsigned char mask = 0;
+//	if(numBlocks == 0)
+//	{
+//		return false;
+//	}
+//
+//	if(remainder)
+//	{
+//		output = 0xFF;
+//		byte = integer + 1;
+//		for(int i=0;i<byte;i++)
+//		{
+//			output = (output<<8) + 0xFF;
+//		}
+//		for(int i=0;i<(8-remainder);i++)
+//		{
+//			output = clearbit(output, i);
+//		}
+//	}
+//	else
+//	{
+//		output = 0xFF;
+//		byte = integer;
+//		for(int i=0;i<byte;i++)
+//		{
+//			output = (output<<8) + 0xFF;
+//		}
+//	}
+//
+//	for(int i=0;i<numBlocks;i++)
+//	{
+//		if(mem->block[i] == -1)
+//		{
+//			output = clearbit(output,8*byte-1-i);
+//		}
+//	}
+//	
+//	// write file 
+//	FILE *fptr = NULL;
+//	fptr = fopen(filename, "w");
+//	fwrite(output, 1, sizeof(output), fptr);
+//	fclose(fptr);
+//
+//	return true;
+//}
 #endif
 
 #ifdef TEST_ALLOCATEMEMORY
