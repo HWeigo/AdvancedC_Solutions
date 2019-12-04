@@ -113,18 +113,28 @@ bool saveOccupancy(Memory * mem, const char * filename)
 	int indBlock = 0;
 	int indByte = 0;
 	int indBit = 0;
-	while(indBlocks != (numBlocks - 1))
+	while(indBlock != numBlocks)
 	{
 		indByte = indBlock/8;
 		indBit = indBlock%8;
 
 		if(mem->block[indBlock] == -1)
 		{
-			output[indByte] = clearbit(output[indByte], indBit);
+			output[indByte] = clearbit(output[indByte], 7-indBit);
 		}
-		indBlocks++;
+		indBlock++;
 	}
-	
+	// write file 
+	FILE *fptr = NULL;
+	fptr = fopen(filename, "w");
+//	for(int i=0;i<byte;i++)
+//	{
+//		fwrite(output[i], 1, sizeof(unsigned char), fptr);
+//	}
+	fwrite(output, sizeof(unsigned char), byte,fptr);
+	fclose(fptr);
+
+	return true;
 }
 //bool saveOccupancy(Memory * mem, const char * filename)
 //{

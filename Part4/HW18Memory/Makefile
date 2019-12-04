@@ -6,7 +6,7 @@ WARNING = -Wall -Wshadow --pedantic
 ERROR = -Wvla -Werror
 GCC = gcc -std=c99 -g $(WARNING) $(ERROR) 
 VAL = valgrind --tool=memcheck --log-file=vallog --leak-check=full --verbose
-TESTFALGS = -DTEST_CREATEMEMORY -DTEST_DESTROYMEMORY -DTEST_ALLOCATEMEMORY -DTEST_FREEMEMORY 
+TESTFALGS = -DTEST_CREATEMEMORY -DTEST_DESTROYMEMORY -DTEST_ALLOCATEMEMORY -DTEST_FREEMEMORY -DTEST_SAVEOCCUPANCY
 
 SRCS = main.c memory.c
 OBJS = $(SRCS:%.c=%.o)

@@ -29,8 +29,7 @@ int main(int argc, char ** argv)
 	allocateMemory(mem, alloSize);
 	freeMemory(mem, 0);
 	allocateMemory(mem,3);
-	allocateMemory(mem,6);
-//	saveOccupancy(mem, argv[3]);
+	saveOccupancy(mem, argv[3]);
 	printOccupancy(mem);
 	destroyMemory(mem);
 
