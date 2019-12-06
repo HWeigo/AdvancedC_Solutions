@@ -26,7 +26,7 @@ int main(int argc, char ** argv)
 	Memory *mem = NULL;
 	createMemory(&mem, totalSize);
 	allocateMemory(mem, alloSize);
-	allocateMemory(mem, alloSize);
+	allocateMemory(mem, 2);
 	freeMemory(mem, 0);
 	allocateMemory(mem,3);
 	saveOccupancy(mem, argv[3]);

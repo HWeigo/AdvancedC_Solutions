@@ -20,7 +20,7 @@ hw18: $(OBJS)
 testall: test1 test2 test3 test4 test5 test6
 
 test1: hw18
-	./hw18 20 5 output1 
+	./hw18 8 5 output1 
 #	diff -w output1 expected/expected1
 
 test2: hw16
