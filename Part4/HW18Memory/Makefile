@@ -17,31 +17,23 @@ hw18: $(OBJS)
 .c.o: 
 	$(GCC) $(TESTFALGS) -c $*.c 
 
-testall: test1 test2 test3 test4 test5 test6
+testall: test1 test2 test3 test4 test5
 
 test1: hw18
-	./hw18 8 5 output1 
+	./hw18 20 inputs/test1 output1 
 #	diff -w output1 expected/expected1
 
-test2: hw16
-	./hw16 inputs/test2in inputs/test2post > output2
-	diff -w output2 expected/expected2
+test2: hw18
+	./hw18 20 inputs/test2 output2
 
-test3: hw16
-	./hw16 inputs/test3in inputs/test3post > output3
-	diff -w output3 expected/expected3
+test3: hw18 
+	./hw18 20 inputs/test3 output3
 
-test4: hw16
-	./hw16 inputs/test4in inputs/test4post > output4
-	diff -w output4 expected/expected4
+test4: hw18
+	./hw18 10 inputs/test4 output4
 
-test5: hw16
-	./hw16 inputs/test5in inputs/test5post > output5
-	diff -w output5 expected/expected5
-
-test6: hw16
-	./hw16 inputs/test6in inputs/test6post > output6
-	diff -w output6 expected/expected6
+test5: hw18
+	./hw18 10 inputs/test5 output5
 
 memory: hw16
 	$(VAL) ./hw16 inputs/test6in inputs/test6post 
